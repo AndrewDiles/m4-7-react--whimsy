@@ -27,6 +27,8 @@ const Tweet = ({
   handleToggleLike,
   handleToggleRetweet,
 }) => {
+
+  // console.log('isRetweetedByCurrentUser:', isRetweetedByCurrentUser);
   return (
     <Wrapper>
       <Header>
@@ -36,11 +38,31 @@ const Tweet = ({
           <Username>@{username}</Username>
         </Name>
       </Header>
-
       <TweetContents>{tweetContents}</TweetContents>
-
+      <Timestamp>
+        {timestamp}
+      </Timestamp>
+      
       <Divider />
-
+      <Stats>
+        <StatsBlock>
+          <StatsNum>
+            {numOfRetweets}
+          </StatsNum>
+          <StatsText>
+            Retweets
+          </StatsText>
+        </StatsBlock>
+        <StatsBlock>
+          <StatsNum>
+            {numOfLikes}
+          </StatsNum>
+          <StatsText>
+            Likes
+          </StatsText>
+        </StatsBlock>
+      </Stats>
+      <Divider />
       <Actions>
         <Action
           color="rgb(27, 149, 224)"
@@ -56,10 +78,12 @@ const Tweet = ({
           color="rgb(23, 191, 99)"
           size={40}
           onClick={handleToggleRetweet}
+          isRetweetedByCurrentUser={isRetweetedByCurrentUser}
         >
           <TweetActionIcon
             kind="retweet"
-            color={isRetweetedByCurrentUser ? 'rgb(23, 191, 99)' : undefined}
+            // color={isRetweetedByCurrentUser ? 'rgb(23, 191, 99)' : undefined}
+            color = 'blue'
           />
         </Action>
 
@@ -144,6 +168,22 @@ const Stats = styled.div`
   align-items: center;
   height: 48px;
 `;
+
+const StatsBlock = styled.span`
+  display: flex;
+  margin-right: 50px;
+`
+
+const StatsNum = styled.span`
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 5px;
+
+`
+const StatsText = styled.span`
+  color: rgb(101, 119, 134);
+  font-size: 16px;
+`
 
 const Actions = styled.div`
   display: flex;

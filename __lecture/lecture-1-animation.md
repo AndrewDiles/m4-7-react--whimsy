@@ -75,7 +75,10 @@ Tasteful use of animation can make your work stand out.
 ```css
 .some-class {
   opacity: 0;
-  transition: opacity 500ms;
+  transition: opacity 500ms linear; // or ease, ease-in, ease-in-out, cubic-bezier()
+}
+.some-class:hover {
+  opactiy: 1;
 }
 ```
 
@@ -158,6 +161,16 @@ const Surface = styled(ButtonLayer)`
   justify-content: center;
   align-items: center;
   font-size: 32px;
+
+  //add this: 
+
+  transition: all 300ms ease;  // by placing it here, it applies for unhover.
+    &:hover {
+    cursor: pointer;
+    transform: translate(-10px, -10px);
+    // transition: transform 300ms ease;  Do not place it here
+  }
+
 `;
 
 const Shadow = styled(ButtonLayer)`
@@ -416,6 +429,58 @@ const Box = styled.div`
 `;
 
 render(<App />);
+
+// becomes:
+
+const App = () => {
+  const [inflatedAmount, setInflatedAmount] = React.useState(1);
+
+  const inflateMore = () => {
+    setInflatedAmount(inflatedAmount + 0.55);
+  };
+const inflateStyle = useSpring({
+  transform: `scale(${inflatedAmount})`,
+  config: {
+    tension: 120,
+    friction: 14
+  }
+});
+  return (
+    <Wrapper>
+      <Button onClick={inflateMore}>Inflate!</Button>
+      <Box
+        style={inflateStyle}
+      >
+        Inflated!
+      </Box>
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+const Button = styled.button`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+`;
+const Box = styled(animated.div)`
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: red;
+  font-size: 14px;
+`;
+
+export default App;
+
 ```
 
 ---
@@ -466,4 +531,70 @@ const Button = styled.button`
 `;
 
 render(<App />);
+
+
+// becomes
+
+
+
+
+import React from "react";
+import styled from "styled-components";
+import { useSpring, animated } from 'react-spring';
+
+const Card = ({ isVisible, children }) => {
+
+  const appearAnimation = useSpring({
+    opacity: isVisible ? 1 : 0,
+    transform: isVisible ? "translateY(0px)" : "translateY(10px)",
+    config: {
+      tension: 120,
+      friction: 14
+    }
+  });
+
+  return (
+    <CardWrapper
+      style={appearAnimation}
+    >
+      {children}
+    </CardWrapper>
+  );
+};
+
+const CardWrapper = styled(animated.div)`
+  box-shadow: 3px 3px 6px black;
+  border-radius: 10px;
+  padding: 50px;
+`;
+
+const App = () => {
+  const [showCard, setShowCard] = React.useState(true);
+
+  return (
+    <Wrapper>
+      <Button
+      onClick = {() =>{showCard ? setShowCard(false) : setShowCard(true)}}
+      >Show Card</Button>
+      <Card isVisible={showCard}>Hello World</Card>
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.div`
+  text-align: center;
+  margin-top: 60px;
+  width: 260px;
+`;
+
+const Button = styled.button`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+`;
+
+export default App;
+
+
 ```
+
