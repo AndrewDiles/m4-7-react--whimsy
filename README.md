@@ -133,7 +133,7 @@ Here's the effect we're going for, isolated:
 
 ![popping circle](./__lecture/assets/pop-nice.gif)
 
-Create a new `PoppingCircle` folder in `sec/components`, and create the following files:
+Create a new `PoppingCircle` folder in `src/components`, and create the following files:
 
 - index.js
 - PoppingCircle.js
